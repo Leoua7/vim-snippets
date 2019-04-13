@@ -1,33 +1,3 @@
-
-snippet abox "A nice box with the current comment symbol" b
-`!p
-box = make_box(len(t[1]))
-snip.rv = box[0]
-snip += box[1]
-`${1:${VISUAL:content}}`!p
-box = make_box(len(t[1]))
-snip.rv = box[2]
-snip += box[3]`
-$0
-endsnippet
-
-snippet bbox "A nice box over the full width" b
-`!p
-if not snip.c:
-	width = int(vim.eval("&textwidth - (virtcol('.') == 1 ? 0 : virtcol('.'))")) or 71
-box = make_box(len(t[1]), width)
-snip.rv = box[0]
-snip += box[1]
-`${1:${VISUAL:content}}`!p
-box = make_box(len(t[1]), width)
-snip.rv = box[2]
-snip += box[3]`
-$0
-endsnippet
-
-##########################
-# LOREM IPSUM GENERATORS #
-##########################
 snippet lorem "Lorem Ipsum - 50 Words" b
 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
 tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
@@ -35,9 +5,15 @@ vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
 no sea takimata sanctus est Lorem ipsum dolor sit amet.
 endsnippet
 
-#########
-# DATES #
-#########
+snippet doc "Latex的第一句" b
+\documentcalss{$1}
+$2
+endsnippet
+
+
+
+
+
 snippet date "YYYY-MM-DD" w
 `!v strftime("%Y-%m-%d")`
 endsnippet
@@ -51,33 +27,24 @@ snippet datetime "YYYY-MM-DD hh:mm" w
 `!v strftime("%Y-%m-%d %H:%M")`
 endsnippet
 
-snippet todo "TODO comment" bw
-`!p snip.rv=get_comment_format()[0]` ${2:TODO}: $0${3: <${4:`!v strftime('%d-%m-%y')`}${5:, `!v g:snips_author`}>} `!p snip.rv=get_comment_format()[2]`
-endsnippet
 
-##########
-#  Misc  #
-##########
+
+
+
 snippet uuid "Random UUID" w
 `!p if not snip.c: import uuid; snip.rv = uuid.uuid4()`
 endsnippet
 
-# vim:ft=snippets:
-###############
-#  1700 小哥  #
-###############
+
+
+
+
 snippet beg "begin{} / end{}" bA
 \begin{$1}
     $0
 \end{$1}
 endsnippet
 
-snippet box "Box"
-`!p snip.rv = '┌' + '─' * (len(t[1]) + 2) + '┐'`
-│ $1 │
-`!p snip.rv = '└' + '─' * (len(t[1]) + 2) + '┘'`
-$0
-endsnippet
 
 snippet sign "Signature"
 Yours sincerely,
@@ -86,9 +53,7 @@ Yao  Guanlei
 endsnippet
 
 
-######################
-#  1700 小哥2 mk与dm #
-######################
+
 snippet mk "Math" wA
 $${1}$`!p
 if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
@@ -118,23 +83,21 @@ snippet cb "^3" iA
 ^3
 endsnippet
 
-snippet compl "complement" iA
-^{c}
-endsnippet
-
 snippet td "superscript" iA
 ^{$1}$0
 endsnippet
 
-######################
-#  1700 小哥2 fenshu #
-######################
+
+
+
 snippet // "Fraction" iA
-\\frac{$1}{$2}$0
+\\frac{$1}{$2}
 endsnippet
+
 snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "Fraction" wrA
 \\frac{`!p snip.rv = match.group(1)`}{$1}$0
 endsnippet
+
 priority 1000
 snippet '^.*\)/' "() Fraction" wrA
 `!p
@@ -142,105 +105,14 @@ stripped = match.string[:-1]
 depth = 0
 i = len(stripped) - 1
 while True:
-    if stripped[i] == ')': depth += 1
-    if stripped[i] == '(': depth -= 1
-    if depth == 0: break;
-    i -= 1
+	if stripped[i] == ')': depth += 1
+	if stripped[i] == '(': depth -= 1
+	if depth == 0: break;
+	i -= 1
 snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
 `{$1}$0
 endsnippet
+
 snippet / "Fraction" iA
 \\frac{${VISUAL}}{$1}$0
-endsnippet
-##################################
-#  1700 小哥2 Sympy和Mathematica #
-##################################
-snippet sympy "sympy block " w
-sympy $1 sympy$0
-endsnippet
-
-priority 10000
-snippet 'sympy(.*)sympy' "evaluate sympy" wr
-`!p
-from sympy import *
-x, y, z, t = symbols('x y z t')
-k, m, n = symbols('k m n', integer=True)
-f, g, h = symbols('f g h', cls=Function)
-init_printing()
-snip.rv = eval('latex(' + match.group(1).replace('\\', '') \
-    .replace('^', '**') \
-    .replace('{', '(') \
-    .replace('}', ')') + ')')
-`
-endsnippet
-priority 1000
-snippet math "mathematica block" w
-math $1 math$0
-endsnippet
-
-priority 10000
-snippet 'math(.*)math' "evaluate mathematica" wr
-`!p
-import subprocess
-code = 'ToString[' + match.group(1) + ', TeXForm]'
-snip.rv = subprocess.check_output(['wolframscript', '-code', code])
-`
-endsnippet
-
-########################
-#  1700 小哥2 后缀片段 #
-########################
-priority 10
-snippet "bar" "bar" riA
-\overline{$1}$0
-endsnippet
-
-priority 100
-snippet "([a-zA-Z])bar" "bar" riA
-\overline{`!p snip.rv=match.group(1)`}
-endsnippet
-
-priority 10
-snippet "hat" "hat" riA
-\hat{$1}$0
-endsnippet
-
-priority 100
-snippet "([a-zA-Z])hat" "hat" riA
-\hat{`!p snip.rv=match.group(1)`}
-endsnippet
-
-snippet "(\\?\w+)(,\.|\.,)" "Vector postfix" riA
-\vec{`!p snip.rv=match.group(1)`}
-endsnippet 
-#######################
-#  1700 小哥2 上下文  #
-#######################
-global !p
-texMathZones = ['texMathZone'+x for x in ['A', 'AS', 'B', 'BS', 'C',
-'CS', 'D', 'DS', 'E', 'ES', 'F', 'FS', 'G', 'GS', 'H', 'HS', 'I', 'IS',
-'J', 'JS', 'K', 'KS', 'L', 'LS', 'DS', 'V', 'W', 'X', 'Y', 'Z']]
-
-texIgnoreMathZones = ['texMathText']
-
-texMathZoneIds = vim.eval('map('+str(texMathZones)+", 'hlID(v:val)')")
-texIgnoreMathZoneIds = vim.eval('map('+str(texIgnoreMathZones)+", 'hlID(v:val)')")
-
-ignore = texIgnoreMathZoneIds[0]
-
-def math():
-    synstackids = vim.eval("synstack(line('.'), col('.') - (col('.')>=2 ? 1 : 0))")
-    try:
-        first = next(
-            i for i in reversed(synstackids)
-            if i in texIgnoreMathZoneIds or i in texMathZoneIds
-        )
-        return first != ignore
-    except StopIteration:
-        return False
-endglobal
-
-context "math()"
-snippet sr "^2" iA
-^2
 endsnippet
