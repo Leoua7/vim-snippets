@@ -49,7 +49,7 @@ endsnippet
 snippet sign "Signature"
 Yours sincerely,
 
-Yao  Guanlei
+Gyanlei Yao
 endsnippet
 
 
@@ -86,6 +86,9 @@ endsnippet
 snippet td "superscript" iA
 ^{$1}$0
 endsnippet
+snippet Td "" iA
+_{$1}$0
+endsnippet
 
 
 
@@ -110,7 +113,7 @@ snippet doc "Late" b
 document
 endsnippet
 snippet \} "" iA
-\left\{$1\right\}$0
+\left\\{$1\right\\}$0
 endsnippet
 
 snippet \intt "积分" iA
@@ -126,3 +129,17 @@ endsnippet
 snippet fsz "expression" iA
 f(x,y,z)
 endsnippet
+
+snippet \mathrm "" iA
+\mathrm{d} 
+endsnippet
+
+snippet \' "" iA
+^{\prime}()
+endsnippet
+
+snippet \img "codecogs的云服务，api+一大串LaTex" iA
+<img src="http://latex.codecogs.com/gif.latex?$1" />
+$0
+endsnippet
+
