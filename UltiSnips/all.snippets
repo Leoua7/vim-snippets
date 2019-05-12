@@ -80,3 +80,20 @@ code = 'ToString[' + match.group(1) + ', TeXForm]'
 snip.rv = subprocess.check_output(['wolframscript', '-code', code])
 `
 endsnippet
+
+### LaTex doc
+## Latex Start
+snippet \doc "Late" bA
+\documentclass[UTF8]{ctex$1}
+$0
+endsnippet
+
+snippet beg "begin{} / end{}" bA
+\begin{$1}
+    $0
+\end{$1}
+endsnippet
+
+snippet motto "motto1" i
+打扰你，才是我的温柔
+endsnippet
