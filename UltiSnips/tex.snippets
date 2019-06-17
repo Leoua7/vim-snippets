@@ -219,4 +219,54 @@ snippet lim "lim: i
 \lim_{n \rightarrow ${1:\infty}} $0
 endsnippet
 
+snippet '([A-Za-z])(\d)' "auto subscript" wrA
+`!p snip.rv = match.group(1)`_`!p snip.rv = match.group(2)`
+endsnippet
 
+snippet '([A-Za-z])_(\d\d)' "auto subscript2" wrA
+`!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2)`}
+endsnippet
+
+#分数START
+snippet // "Fraction" iA
+\\frac{$1}{$2}$0
+endsnippet
+
+snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "Fraction_2" wrA
+\\frac{`!p snip.rv = match.group(1)`}{$1}$0
+endsnippet
+
+priority 1000
+snippet '^.*\)/' "() Fraction_3" wrA
+`!p
+stripped = match.string[:-1]
+depth = 0
+i = len(stripped) - 1
+while True:
+	if stripped[i] == ')': depth += 1
+	if stripped[i] == '(': depth -= 1
+	if depth == 0: break;
+	i -= 1
+snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
+`{$1}$0
+endsnippet
+
+snippet / "Fractio_4" i 
+\\frac{${VISUAL}}{$1}$0
+endsnippet
+#分数END
+
+snippet \intt "积分" iA
+\\$1int_{$2}^{$3} $4 \mathrm{d} $0
+endsnippet
+snippet Intergate "不定积分" i
+\int$1 \mathrm{d} $0
+endsnippet
+
+snippet \math "直立体" iA
+\math${1:rm}{d} 
+endsnippet
+
+snippet \' "" iA
+^{\prime}($1)$0
+endsnippet
