@@ -1,3 +1,13 @@
+priority -50
+
+extends texmath
+
+global !p
+
+def create_table(snip):
+	rows = snip.buffer[snip.line].split('x')[0]
+	cols = snip.buffer[snip.line].split('x')[1]
+
 	int_val = lambda string: int(''.join(s for s in string if s.isdigit()))
 	
 	rows = int_val(rows)
