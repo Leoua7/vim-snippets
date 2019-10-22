@@ -274,3 +274,16 @@ endsnippet
 snippet \' "" iA
 ^{\prime}($1)$0
 endsnippet
+
+snippet \muban "Standard template" b
+\documentclass[UTF8]{ctexrep}
+\usepackage{amsmath}
+\CTEXoptions[today=old]
+\usepackage[a4paper,scale=0.8]{geometry}
+\title{${1: The Title}}
+\author{Gyanlei Yao}
+\date{`!v strftime("%Y-%m-%d")`}
+\begin{document}
+\maketitle
+$0
+\end{document}
